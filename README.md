@@ -6,7 +6,8 @@ A simple idea tool allows one to type or draw.
 
 Requisties and Install
 ======================
-Download the package and double click app.pyw file
+This python gui application requires "tkinter".
+Download the package and double click app.pyw file to run the application.
 
 
 Operations
