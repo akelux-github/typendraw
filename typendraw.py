@@ -8,7 +8,7 @@ try:
 except ImportError:
     # Python3
     import tkinter as tk
-    
+
 class TypeDraw(tk.Canvas):
     """
     A Canvas variant with predefined bindings for typing and drawing.
@@ -29,8 +29,7 @@ class TypeDraw(tk.Canvas):
         self.my = event.y
         # self.root.update()
 
-    
-    def key_pressed(self, event=None):   
+    def key_pressed(self, event=None):
         self.create_text(self.mx, self.my, text = event.char, font=('Consolas', 16))
         self.mx = self.mx+12
         # self.root.update()
@@ -42,6 +41,7 @@ class TypeDraw(tk.Canvas):
             self.create_line(self.mx, self.my, mx, my, width=2)
         self.mx=mx
         self.my=my
-    
+
     def clear(self, event=None):
         self.delete(tk.ALL)
+
