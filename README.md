@@ -7,8 +7,9 @@ A simple idea tool allows one to type or draw on a canvas, and to save the drawi
 Requisties and Install
 ----------------------
 This python gui application requires "tkinter".
-Download the package and double click app.pyw file to run the application.
-
+Download the zip file, unzip and run the application by
+  1. Windows: double click "app.pyw" file
+  2. Linux/Unix: change app.pyw to be executable and run "app.pyw" under terminal; or type "python app.pyw" under terminal
 
 Operations
 ----------
