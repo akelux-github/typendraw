@@ -22,27 +22,56 @@ app.pack(fill=tk.BOTH, expand=1)
 
 # add menu for save and clear
 menu = tk.Menu(root, tearoff=0)
-menu.add_command(label="Save", command=save_ps(app))
-menu.add_separator()
-menu.add_command(label="Clear", command=app.clear)
 
 #change color menu
 color_menu = tk.Menu(menu, tearoff=0)
 color_menu = tk.Menu(menu, tearoff=0)
+color_menu.add_command(label="Black", command=lambda:app.change_color('black'))
+color_menu.add_command(label="Yellow", command=lambda:app.change_color('yellow'))
+color_menu.add_command(label="blue", command=lambda:app.change_color('blue'))
 color_menu.add_command(label="Red", command=lambda:app.change_color('red'))
 color_menu.add_command(label="Green", command=lambda:app.change_color('green'))
-menu.add_separator()
+# menu.add_separator()
 menu.add_cascade(label="Change color", menu=color_menu)
 
 #change line_with menu
 linewidth_menu = tk.Menu(menu, tearoff=0)
-linewidth_menu = tk.Menu(menu, tearoff=0)
 linewidth_menu.add_command(label="1", command=lambda:app.change_linewidth(1))
 linewidth_menu.add_command(label="2", command=lambda:app.change_linewidth(2))
 linewidth_menu.add_command(label="3", command=lambda:app.change_linewidth(3))
+linewidth_menu.add_command(label="4", command=lambda:app.change_linewidth(4))
+linewidth_menu.add_command(label="5", command=lambda:app.change_linewidth(5))
 
-menu.add_separator()
 menu.add_cascade(label="Change line width", menu=linewidth_menu)
+
+#change font menu
+font_menu = tk.Menu(menu, tearoff=0)
+font_menu.add_command(label="Lucida Console 14", command=lambda:app.change_font(('Lucida Console', 14)))
+font_menu.add_command(label="Lucida Console 16", command=lambda:app.change_font(('Lucida Console', 16)))
+font_menu.add_command(label="Lucida Console 18", command=lambda:app.change_font(('Lucida Console', 18)))
+font_menu.add_command(label="Courier New 14", command=lambda:app.change_font(('Courier New', 14)))
+font_menu.add_command(label="Courier New 16", command=lambda:app.change_font(('Courier New', 16)))
+font_menu.add_command(label="Courier New 18", command=lambda:app.change_font(('Courier New', 18)))
+font_menu.add_command(label="Consolas 14", command=lambda:app.change_font(('Consolas', 14)))
+font_menu.add_command(label="Consolas 16", command=lambda:app.change_font(('Consolas', 16)))
+font_menu.add_command(label="Consolas 18", command=lambda:app.change_font(('Consolas', 18)))
+font_menu.add_command(label="Consolas 20", command=lambda:app.change_font(('Consolas', 20)))
+
+menu.add_cascade(label="Change font", menu=font_menu)
+
+#change font menu
+bg_menu = tk.Menu(menu, tearoff=0)
+bg_menu.add_command(label='black', command=lambda: app.config(bg='black'))
+bg_menu.add_command(label='grey', command=lambda: app.config(bg='grey'))
+bg_menu.add_command(label='white', command=lambda: app.config(bg='white'))
+
+menu.add_cascade(label="Change background", menu=bg_menu)
+
+#
+menu.add_separator()
+menu.add_command(label="Save", command=save_ps(app))
+menu.add_command(label="Clear", command=app.clear)
+
 # pop menu bindings
 root.bind('<Button-3>', lambda e: menu.post(e.x_root, e.y_root))
 root.bind('<Button-2>', lambda e: menu.post(e.x_root, e.y_root))
