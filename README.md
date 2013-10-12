@@ -1,5 +1,5 @@
-typendraw
-=========
+Overview: typendraw
+===================
 
 A simple idea tool allows one to type or draw on a canvas, and to save the drawing as eps file.
 
