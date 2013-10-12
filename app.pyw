@@ -26,6 +26,23 @@ menu.add_command(label="Save", command=save_ps(app))
 menu.add_separator()
 menu.add_command(label="Clear", command=app.clear)
 
+#change color menu
+color_menu = tk.Menu(menu, tearoff=0)
+color_menu = tk.Menu(menu, tearoff=0)
+color_menu.add_command(label="Red", command=lambda:app.change_color('red'))
+color_menu.add_command(label="Green", command=lambda:app.change_color('green'))
+menu.add_separator()
+menu.add_cascade(label="Change color", menu=color_menu)
+
+#change line_with menu
+linewidth_menu = tk.Menu(menu, tearoff=0)
+linewidth_menu = tk.Menu(menu, tearoff=0)
+linewidth_menu.add_command(label="1", command=lambda:app.change_linewidth(1))
+linewidth_menu.add_command(label="2", command=lambda:app.change_linewidth(2))
+linewidth_menu.add_command(label="3", command=lambda:app.change_linewidth(3))
+
+menu.add_separator()
+menu.add_cascade(label="Change line width", menu=linewidth_menu)
 # pop menu bindings
 root.bind('<Button-3>', lambda e: menu.post(e.x_root, e.y_root))
 root.bind('<Button-2>', lambda e: menu.post(e.x_root, e.y_root))
