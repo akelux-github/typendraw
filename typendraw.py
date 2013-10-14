@@ -9,6 +9,8 @@ except ImportError:
     # Python3
     import tkinter as tk
 
+from font_chooser import askChooseFont
+
 class TypeDraw(tk.Canvas):
     """
     A Canvas variant with predefined bindings for typing and drawing.
@@ -19,6 +21,9 @@ class TypeDraw(tk.Canvas):
         self.my = -1
         # self.background_color = 'white'
         self.draw_color = 'black'
+        # self.fontname = 'Consolas'
+        # self.fontsize = 16
+        # self.fontface = None
         self.font = ('Consolas', 16)
         self.line_width = 2
 
@@ -42,18 +47,34 @@ class TypeDraw(tk.Canvas):
         # self.root.update()
 
     def key_pressed(self, event=None):
-        if len(event.char) != 1:
+        print 'event.char:', event.char
+        print "key symbol:", event.keysym
+        if len(event.char) != 1: # process combined control keys
+            sym = event.keysym
+            # if sym == 'Escape':
+            #    self.blink = False
+            if sym == 'Right':
+                self.mx += 1
+            elif sym == 'Left':
+                self.mx -= 1
+            elif sym == 'Up':
+                self.my -= 1
+            elif sym == 'Down':
+                self.my += 1
             return
+
         o = ord(event.char)
+        # print "ord:", o
         widget = None
         if o == 32: # don't draw space
             self.mx = self.mx+(self.font[1]-4)
+        elif o == 27: # escape
+            self.blink = False
         elif o>32 and o<127:
             widget = self.create_text(self.mx, self.my, text = event.char, font=self.font, fill=self.draw_color)
             self.stack.append(widget) # put to stack for undo
             self.mx = self.mx+(self.font[1]-4) # shift after draw a character
-            self.start_blinking()
-           
+            self.start_blinking()           
         elif o == 127 or o == 8:
             self.blink = False
             if self.stack:
@@ -75,8 +96,17 @@ class TypeDraw(tk.Canvas):
     def clear(self, event=None):
         self.delete(tk.ALL)
 
-    def change_font(self,font):
-        self.font = font
+    """
+    def change_fontname(self,fontname):
+        self.fontname = fontname
+
+    def change_fontsize(self,fontsize):
+        self.fontsize = fontsize
+
+    def change_fontface(self,fontface):
+        self.fontface = fontface
+
+    """
 
     def change_color(self,color):
         self.draw_color = color
@@ -103,6 +133,9 @@ class TypeDraw(tk.Canvas):
         if not self.blink:
             self.blink = True
             self.after(500, self.blinking)
+
+    def choose_font(self):
+        self.font = askChooseFont(self)
 
     """
     def stop_blinking(self):
