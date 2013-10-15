@@ -31,7 +31,7 @@ menu.add_cascade(label="Change color", menu=color_menu)
 linewidth_menu = tk.Menu(menu, tearoff=0)
 
 for w in range(1,9): # change here to have more options
-    linewidth_menu.add_command(label=w + ' px', command=lambda:app.change_linewidth(w))
+    linewidth_menu.add_command(label=str(w) + ' px', command=lambda:app.change_linewidth(w))
 
 menu.add_cascade(label="Change line width", menu=linewidth_menu)
 
