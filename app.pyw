@@ -42,7 +42,7 @@ menu.add_separator()
 menu.add_command(label="Save", command=app.save)
 # menu.add_command(label="Load", command=app.load)
 menu.add_command(label="Clear", command=app.clear)
-menu.add_command(label="Quit", command=lambda: root.quit()) 
+menu.add_command(label="Quit", command=lambda: app.close() and root.quit()) 
 
 app.bind('<Enter>', lambda e: menu.unpost()) # Fixing a bug on gtk, the menu is not hiden by itself
 

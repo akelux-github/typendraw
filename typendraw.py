@@ -15,7 +15,7 @@ from font_chooser import askChooseFont
 
 from tkColorChooser import askcolor
 
-import tkFileDialog
+import tkFileDialog, tkMessageBox
 
 class TypeDraw(tk.Canvas):
     """
@@ -31,6 +31,8 @@ class TypeDraw(tk.Canvas):
         self.line_width = 2
         self.em = 12
 
+        self.saved = True
+
         self.cursor = None
         self.blink = False
         self.stack = [] # history for redo
@@ -39,7 +41,7 @@ class TypeDraw(tk.Canvas):
         self.bind_all('<Key>', self.key_pressed) # have to use bind all
         self.bind('<B1-Motion>', self.draw)
         # self.bind('<B3-Motion>', self.draw)
-        
+
 
     def catch_mouse(self, event = None):
         self.mx = event.x
@@ -74,9 +76,10 @@ class TypeDraw(tk.Canvas):
             self.blink = False
         elif o>32 and o<127:
             widget = self.create_text(self.mx, self.my, text = event.char, font=self.font, fill=self.draw_color)
+            self.saved = False
             self.stack.append(widget) # put to stack for undo
             self.mx += self.em # shift after draw a character
-            self.start_blinking()           
+            self.start_blinking()
         elif o == 127 or o == 8:
             self.blink = False
             if self.stack:
@@ -91,6 +94,7 @@ class TypeDraw(tk.Canvas):
         my = event.y
         if self.mx >= 0:
             w = self.create_line(self.mx, self.my, mx, my, width=self.line_width, fill=self.draw_color)
+            self.saved = False
             self.stack.append(w)
         self.mx=mx
         self.my=my
@@ -112,13 +116,13 @@ class TypeDraw(tk.Canvas):
         else: # hide cursor
             self.delete(self.cursor)
             self.cursor = None
-        
-        if self.blink:    
+
+        if self.blink:
             self.after(500, self.blinking)
         elif self.cursor:
             self.delete(self.cursor)
             self.cursor = None
-     
+
     def start_blinking(self):
         if not self.blink:
             self.blink = True
@@ -130,19 +134,31 @@ class TypeDraw(tk.Canvas):
     def set_bgcolor(self):
         self.color = askcolor(parent=self,
                          title='Choose a background color')
-        self.config(bg=self.color[1])                 
-        
+        self.config(bg=self.color[1])
+
     def set_drawcolor(self):
         self.draw_color = askcolor(parent=self,
                          title='Choose a drawing color')[1]
-    
+
     def save(self):
-        f = tkFileDialog.asksaveasfilename(parent=self)
-        self.postscript(file=f, colormode='color')
-        
+        if not self.saved:
+            f = tkFileDialog.asksaveasfilename(parent=self)
+            if f:
+                self.postscript(file=f, colormode='color')
+                self.saved = True
+        return self.saved        
+
     def load(self): # T.B.D.
         f = tkFileDialog.askopenfilename(parent=self)
         photo = tk.PhotoImage(file=f)
         self.delete(tk.ALL)
         self.create_image(image=photo)
 
+    def close(self): # ask for saving before closing
+        if not self.saved:
+            ok = tkMessageBox.askokcancel(self, message="Save modified scratch?")
+            if ok:
+                return self.save()
+            else:
+                return False
+        return True
