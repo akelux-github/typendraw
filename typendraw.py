@@ -11,6 +11,8 @@ except ImportError:
 
 from font_chooser import askChooseFont
 
+from tkColorChooser import askcolor
+
 class TypeDraw(tk.Canvas):
     """
     A Canvas variant with predefined bindings for typing and drawing.
@@ -21,6 +23,7 @@ class TypeDraw(tk.Canvas):
         self.my = -1
         # self.background_color = 'white'
         self.draw_color = 'black'
+        self.color = 'white'
         # self.fontname = 'Consolas'
         # self.fontsize = 16
         # self.fontface = None
@@ -47,8 +50,8 @@ class TypeDraw(tk.Canvas):
         # self.root.update()
 
     def key_pressed(self, event=None):
-        print 'event.char:', event.char
-        print "key symbol:", event.keysym
+        # print 'event.char:', event.char
+        # print "key symbol:", event.keysym
         if len(event.char) != 1: # process combined control keys
             sym = event.keysym
             # if sym == 'Escape':
@@ -136,6 +139,19 @@ class TypeDraw(tk.Canvas):
 
     def choose_font(self):
         self.font = askChooseFont(self)
+
+    def set_bgcolor(self):
+        # askcolor() returns a tuple of the form
+        # ((r,g,b), hex) or (None, None) if cancelled
+        self.color = askcolor(parent=self,
+                         title='Choose a background color')
+        self.config(bg=self.color[1])                 
+        
+    def set_drawcolor(self):
+        # askcolor() returns a tuple of the form
+        # ((r,g,b), hex) or (None, None) if cancelled
+        self.draw_color = askcolor(parent=self,
+                         title='Choose a drawing color')[1]
 
     """
     def stop_blinking(self):
