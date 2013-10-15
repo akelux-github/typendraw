@@ -128,15 +128,11 @@ class TypeDraw(tk.Canvas):
         self.font, self.em = askChooseFont(self)
 
     def set_bgcolor(self):
-        # askcolor() returns a tuple of the form
-        # ((r,g,b), hex) or (None, None) if cancelled
         self.color = askcolor(parent=self,
                          title='Choose a background color')
         self.config(bg=self.color[1])                 
         
     def set_drawcolor(self):
-        # askcolor() returns a tuple of the form
-        # ((r,g,b), hex) or (None, None) if cancelled
         self.draw_color = askcolor(parent=self,
                          title='Choose a drawing color')[1]
     

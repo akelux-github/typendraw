@@ -3,8 +3,6 @@
 Author: Rong Xiao <akelux@gmail.com>
 LICENSE: GPL 2.0
 """
-import os
-import time
 from typendraw import TypeDraw,tk
 import Tix
 
