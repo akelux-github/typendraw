@@ -1,3 +1,6 @@
+"""
+A FontChooser class modified from http://tkinter.unpythonic.net/wiki/FontChooser
+"""
 import Tix
 import tkSimpleDialog
 import tkFont
@@ -63,7 +66,7 @@ class FontChooser( tkSimpleDialog.Dialog ):
       # Font Sizes
       sizeList = Tix.ComboBox( master, command=self.selectionChanged, dropdown=False, editable=False, selectmode=Tix.IMMEDIATE, variable=self._sizeString )
       sizeList.grid( row=theRow, column=2, columnspan=2, sticky=Tix.N+Tix.S+Tix.E+Tix.W, padx=10 )
-      for size in xrange( 6,31 ):
+      for size in xrange( 6,145 ):
          sizeList.insert( Tix.END, '%d' % size )
       sizeList.configure( value='9' )
       
@@ -129,7 +132,8 @@ class FontChooser( tkSimpleDialog.Dialog ):
          return family, size, ' '.join( styleList )
 
 def askChooseFont( parent, defaultfont=None, showstyles=FontChooser.ALL ):
-   return FontChooser( parent, defaultfont=defaultfont, showstyles=showstyles ).result
+    font_chooser = FontChooser( parent, defaultfont=defaultfont, showstyles=showstyles )
+    return font_chooser.result, font_chooser._currentFont.measure('M') # em for width  
 
 if __name__ == '__main__':
    root = Tix.Tk( )

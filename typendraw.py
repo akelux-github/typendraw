@@ -1,7 +1,9 @@
-# random circles in Tkinter
-# a left mouse double click will idle action for 5 seconds
-# modified vegaseat's code from:
-# http://www.daniweb.com/software-development/python/code/216626
+"""
+A canvas class with type and draw feature.
+Author: Rong Xiao <akelux@gmail.com>
+LICENSE: GPL 2.0
+"""
+
 try:
     # Python2
     import Tkinter as tk
@@ -13,6 +15,8 @@ from font_chooser import askChooseFont
 
 from tkColorChooser import askcolor
 
+import tkFileDialog
+
 class TypeDraw(tk.Canvas):
     """
     A Canvas variant with predefined bindings for typing and drawing.
@@ -21,21 +25,16 @@ class TypeDraw(tk.Canvas):
         tk.Canvas.__init__(self, master=master, cnf=cnf, **kw)
         self.mx = -1
         self.my = -1
-        # self.background_color = 'white'
         self.draw_color = 'black'
         self.color = 'white'
-        # self.fontname = 'Consolas'
-        # self.fontsize = 16
-        # self.fontface = None
         self.font = ('Consolas', 16)
         self.line_width = 2
+        self.em = 12
 
         self.cursor = None
         self.blink = False
         self.stack = [] # history for redo
 
-        # self.cv = tk.Canvas(self.root, width=self.w, height=self.h, bg='black')
-        # self.cv.pack(fill=tk.BOTH)
         self.bind('<Button-1>', self.catch_mouse)
         self.bind_all('<Key>', self.key_pressed) # have to use bind all
         self.bind('<B1-Motion>', self.draw)
@@ -70,13 +69,13 @@ class TypeDraw(tk.Canvas):
         # print "ord:", o
         widget = None
         if o == 32: # don't draw space
-            self.mx = self.mx+(self.font[1]-4)
+            self.mx = self.mx+3*self.em/4
         elif o == 27: # escape
             self.blink = False
         elif o>32 and o<127:
             widget = self.create_text(self.mx, self.my, text = event.char, font=self.font, fill=self.draw_color)
             self.stack.append(widget) # put to stack for undo
-            self.mx = self.mx+(self.font[1]-4) # shift after draw a character
+            self.mx += self.em # shift after draw a character
             self.start_blinking()           
         elif o == 127 or o == 8:
             self.blink = False
@@ -99,18 +98,6 @@ class TypeDraw(tk.Canvas):
     def clear(self, event=None):
         self.delete(tk.ALL)
 
-    """
-    def change_fontname(self,fontname):
-        self.fontname = fontname
-
-    def change_fontsize(self,fontsize):
-        self.fontsize = fontsize
-
-    def change_fontface(self,fontface):
-        self.fontface = fontface
-
-    """
-
     def change_color(self,color):
         self.draw_color = color
 
@@ -119,7 +106,7 @@ class TypeDraw(tk.Canvas):
 
     def blinking(self):
         if self.cursor == None: # draw cursor
-            h = self.font[1]
+            h = 5*self.em/4
             w = (self.line_width+1)/2
             self.cursor = self.create_rectangle(self.mx-w, self.my-h/2, self.mx + w,self.my + h/2,outline = self.draw_color, fill=self.draw_color)
         else: # hide cursor
@@ -138,7 +125,7 @@ class TypeDraw(tk.Canvas):
             self.after(500, self.blinking)
 
     def choose_font(self):
-        self.font = askChooseFont(self)
+        self.font, self.em = askChooseFont(self)
 
     def set_bgcolor(self):
         # askcolor() returns a tuple of the form
@@ -152,17 +139,14 @@ class TypeDraw(tk.Canvas):
         # ((r,g,b), hex) or (None, None) if cancelled
         self.draw_color = askcolor(parent=self,
                          title='Choose a drawing color')[1]
-
-    """
-    def stop_blinking(self):
-        if self.blink:
-            self.blink = False
-            if self.cursor:
-                self.delete(self.cursor)
-                self.cursor = None
-    """      
     
-    """
-    def set_bg(self, color):
-        self.config(bg=color)
-    """             
+    def save(self):
+        f = tkFileDialog.asksaveasfilename(parent=self)
+        self.postscript(file=f, colormode='color')
+        
+    def load(self): # T.B.D.
+        f = tkFileDialog.askopenfilename(parent=self)
+        photo = tk.PhotoImage(file=f)
+        self.delete(tk.ALL)
+        self.create_image(image=photo)
+
