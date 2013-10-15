@@ -144,9 +144,11 @@ class TypeDraw(tk.Canvas):
         if not self.saved:
             f = tkFileDialog.asksaveasfilename(parent=self)
             if f:
+                if f[-4:] != '.eps':
+                    f+='.eps'
                 self.postscript(file=f, colormode='color')
                 self.saved = True
-        return self.saved        
+        return self.saved
 
     def load(self): # T.B.D.
         f = tkFileDialog.askopenfilename(parent=self)
@@ -156,9 +158,13 @@ class TypeDraw(tk.Canvas):
 
     def close(self): # ask for saving before closing
         if not self.saved:
-            ok = tkMessageBox.askokcancel(self, message="Save modified scratch?")
-            if ok:
+            ok = tkMessageBox.askyesnocancel(parent=self,
+                                             message="Your scratch has unsaved modifications. Do you want to save the scratch?",
+                                             title="Save scratch")
+            if ok == True:
                 return self.save()
-            else:
-                return False
+            elif ok == None: # cancel
+                return False # close without saving
+            else: # no
+                return True
         return True
