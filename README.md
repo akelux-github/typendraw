@@ -14,12 +14,12 @@ Download the zip file, unzip and run the application by
 Operations
 ----------
 
-Type: right click to select a point to type, the character you are type will appear in a raw starting from that point.
+Type: left click to select a point to type, the character you are typing will appear in a row starting from the selected point (a blinking cursor will show up).
 
-Draw: holding your left button (as if you are using a pencile) to draw
+Draw: holding your left button (as if you are using a pencile) to draw; you can choose the thickness and color of your pencile via pop-up menu after right click.
 
 Menu: right click will pop up a menu, which allows you to save you current drawing or clear the canvas. Right now the file is save as "eps" at you HOME directory with a date stamp as file name. You can change background color, line width, font and drawing color there.
 
-More feature to come.
+More features to come.
 
 Backspace and Delete key for undo (*NOTE* no redo right now).
